@@ -16,7 +16,7 @@ import com.ibm.jarm.api.util.P8CE_Convert;
 public class ConnectionProvider {
 
 	private static final String USER_NAME = "p8admin";
-	private static final String PASSWORD = "filenet@123";
+	private static final String PASSWORD = "";
 	private static final String OBJSTORE = "FPOS";
 	private static final String URL = "http://10.0.10.149:9083/wsi/FNCEWS40MTOM";
 	private static final String STANZA = "FileNetP8WSI";
