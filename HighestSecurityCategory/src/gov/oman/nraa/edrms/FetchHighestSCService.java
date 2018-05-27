@@ -43,10 +43,10 @@ public class FetchHighestSCService extends PluginService {
 	private static final String SECURITY_CATEGORY = "SecurityCategory";
 	private static final String BOLD_OPEN = "<b>";
 	private static final String BOLD_CLOSE = "</b>";
-	private static int TOP_SECRET = 4;
-	private static int RESTRICTED = 3;
-	private static int CONFIDENTIAL = 2;
-	private static int UNCLASSIFIED = 1;
+	private static final int TOP_SECRET = 4;
+	private static final int RESTRICTED = 3;
+	private static final int CONFIDENTIAL = 2;
+	private static final int UNCLASSIFIED = 1;
 	private ConnectionProvider connection = new ConnectionProvider();
 	private Map<String, Integer> categoryMap = new LinkedHashMap<String, Integer>();
 
@@ -110,7 +110,7 @@ public class FetchHighestSCService extends PluginService {
 			jsonObject.put("scArrayObject", scArray);
 			writer.write(jsonObject.toString());
 		} catch (Exception e) {
-			System.out.println("Some error is there while fetch SC");
+			System.out.println("Some error is there while fetching SC");
 			e.printStackTrace();
 		}
 
@@ -159,13 +159,36 @@ public class FetchHighestSCService extends PluginService {
 		JSONArray array = new JSONArray();
 
 		int maxValueInMap = (Collections.max(categoryMap.values()));
-		for (Entry<String, Integer> entry : categoryMap.entrySet()) {
-			if (entry.getValue() == maxValueInMap) {
-				System.out.println(entry.getKey() + SPACE + entry.getValue());
-				StringBuffer message = new StringBuffer(entry.getKey());
-				message.append(BOLD_CLOSE).append(SPACE).append(entry.getValue());
-				array.add(message.toString());
-			}
+		if (!categoryMap.isEmpty()) {
+			for (Entry<String, Integer> entry : categoryMap.entrySet()) {
+				if (entry.getValue() == maxValueInMap) {
+
+					StringBuffer message = new StringBuffer(entry.getKey());
+					switch (maxValueInMap) {
+					case TOP_SECRET:
+						message.append(BOLD_CLOSE).append(SPACE).append("Top Secret");
+						array.add(message.toString());
+						break;
+					case RESTRICTED:
+						message.append(BOLD_CLOSE).append(SPACE).append("Restricted");
+						array.add(message.toString());
+						break;
+					case CONFIDENTIAL:
+						message.append(BOLD_CLOSE).append(SPACE).append("Confidential");
+						array.add(message.toString());
+						break;
+					case UNCLASSIFIED:
+						message.append(BOLD_CLOSE).append(SPACE).append("Unclassified");
+						array.add(message.toString());
+						break;
+
+					}
+
+				}
+			} 
+		}
+		else{
+			array.add("No records are present");
 		}
 		return array;
 	}
